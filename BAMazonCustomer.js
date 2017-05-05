@@ -31,23 +31,23 @@ var displayProducts = function() {
 
 //------function to prompt customer input, check stock, calculate total and update db stock-----------//
 var sale = function() {
-
+	
 	//set up prompt properties
 	prompt.message = colors.green("Welcome to BAMazon");
 	prompt.delimiter = colors.magenta(" *** ");
 
 	var schema =  {
 		properties: {
-			product: {
+			productID: {
 				description: colors.cyan("Please enter the product ID for the magical pet you'd like to buy"),
 				pattern: /^[0-9]+$/,
-				message: colors.red("Product IDs contain only numbers, try again"),
+				message: colors.yellow("Product IDs contain only numbers, try again"),
 				required: true
 			},
 			quantity: {
 				description: colors.cyan("How many would you like?"),
 				pattern: /^[0-9]+$/,
-				message: colors.red("Please enter a number quantity, try again"),
+				message: colors.yellow("Please enter a number quantity, try again"),
 				required: true
 			}
 		}		
@@ -56,9 +56,19 @@ var sale = function() {
 	prompt.start();
 
 	prompt.get(schema, function(err, customerInput) {
-		console.log("product" + customerInput.product);
-		console.log("quantity" + customerInput.quantity);
-	});
+		//query database for chosen product data
+		connection.query("SELECT * FROM products WHERE ?", {item_id : customerInput.productID}, function(err, DBresults) {
+			//if there is not enough stock
+			if (customerInput.quantity > DBresults[0].stock_quantity) {
+				console.log("I'm sorry, we don't have that many of " + DBresults[0].product_name + ". We only have " + DBresults[0].stock_quantity + ".");
+				console.log("Try changing your pet, quantity or both.");
+				sale();
+			}
+
+
+
+		});//end of connection query
+	});//end of prompt get
 
 };//end of sale function
 
