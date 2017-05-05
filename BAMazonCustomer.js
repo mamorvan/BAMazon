@@ -19,7 +19,7 @@ connection.connect(function(err){
 var displayProducts = function() {
 	connection.query("SELECT item_id, product_name, price FROM products", function(err, DBresults) {
 		if (err) throw err;
-		console.log("BAMazon offers the widest variety and best prices on magical creature adoptions! \nHave fun shopping!\n")
+		console.log("BAMazon offers the widest variety and best prices on magical creature adoptions! \nHave fun shopping!\n");
 		for (var i = 0; i < DBresults.length; i++) {
 			console.log("Item# " + DBresults[i].item_id + ": " + DBresults[i].product_name + " - Price: $" + DBresults[i].price);
 		};
@@ -64,12 +64,16 @@ var sale = function() {
 				console.log("Try changing your pet, quantity or both.");
 				sale();
 			}
-
-
-
+			else {
+				connection.query("UPDATE products SET stock_quantity = stock_quantity-" + customerInput.quantity + " WHERE item_id =" + customerInput.productID, function(err) {
+					if (err) throw err;
+					console.log("Stock has been updated.");
+					console.log("Your total cost is: $" + customerInput.quantity * DBresults[0].price);
+					connection.end();
+				});
+			}
 		});//end of connection query
 	});//end of prompt get
-
 };//end of sale function
 
 displayProducts();
