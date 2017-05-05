@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/mamorvan/BAMazon/issues"
   },
-  "homepage": "https://github.com/mamorvan/BAMazon#readme"
+  "homepage": "https://github.com/mamorvan/BAMazon#readme",
+  "dependencies": {
+    "mysql": "^2.13.0",
+    "prompt": "^1.0.0"
+  }
 }
