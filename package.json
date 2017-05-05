@@ -1,0 +1,19 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "storefront for magical pets",
+  "main": "BAMazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamorvan/BAMazon.git"
+  },
+  "author": "Mary",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mamorvan/BAMazon/issues"
+  },
+  "homepage": "https://github.com/mamorvan/BAMazon#readme"
+}
