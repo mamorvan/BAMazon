@@ -43,7 +43,30 @@ var viewLow = function() {
 
 //-----function to add inventory to existing items-----//
 var addInventory = function() {
+	connection.query("SELECT product_name, stock_quantity FROM products", function(err, DBresults) {
+		inquirer.prompt([
+		{
+			name: "item",
+			message: "Select the item you want to add more of",
+			type: "list",
+			choices: function() {
+				var itemArray = [];
+				for (var i = 0; i < DBresults.length; i++) {
+					itemArray.push(DBresults[i].product_name);
+				}
+				return itemArray;
+			}
+		},
+		{
+			name: "addTo",
+			message: "How many items do you want to add?",
+		}
+		]).then(function(managerInput) {
+			console.log(typeof managerInput.addTo);
 
+		});//end of .then manager input
+	});//end of connection.query callback
+	connection.end();
 }; //end of addInventory function
 
 //-----function to add a new product-----//
@@ -51,24 +74,29 @@ var addProduct = function() {
 
 }; //end of addProduct function
 
-inquirer.prompt([
-	{
-	name: "command",
-	message: "What would you like to do?",
-	type: "list",
-	choices: ["View products", "View low inventory", "Add to inventory", "Add new product"]
-	}
-]).then(function(command) {
-	if (command.command === "View products") {
-		viewProducts();
-	}
-	else if (command.command === "View low inventory") {
-		viewLow();
-	}
-	else if (command.command === "Add to inventory") {
-		addInventory();
-	}
-	else {
-		addProduct();
-	}
-});
+var managerPrompt = function() {
+	inquirer.prompt([
+		{
+			name: "command",
+			message: "What would you like to do?",
+			type: "list",
+			choices: ["View products", "View low inventory", "Add to inventory", "Add new product"]
+		}
+	]).then(function(command) {
+		if (command.command === "View products") {
+			viewProducts();
+		}
+		else if (command.command === "View low inventory") {
+			viewLow();
+		}
+		else if (command.command === "Add to inventory") {
+			addInventory();
+		}
+		else {
+			addProduct();
+		}
+	});
+}//end of managerPrompt function
+
+managerPrompt();
+
