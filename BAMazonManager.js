@@ -41,13 +41,16 @@ var viewLow = function() {
 	connection.end();
 }; //end of viewLow function
 
+//****************WORK ON THIS*************************************//
 //-----function to add inventory to existing items-----//
 var addInventory = function() {
+	var updatedStock;
+
 	connection.query("SELECT product_name, stock_quantity FROM products", function(err, DBresults) {
 		inquirer.prompt([
 		{
 			name: "item",
-			message: "Select the item you want to add more of",
+			message: "Select the item you want to add more of:",
 			type: "list",
 			choices: function() {
 				var itemArray = [];
@@ -59,13 +62,37 @@ var addInventory = function() {
 		},
 		{
 			name: "addTo",
-			message: "How many items do you want to add?",
+			message: "How many items do you want to add?"
 		}
 		]).then(function(managerInput) {
-			console.log(typeof managerInput.addTo);
+			//check if user actually input a number
+			if(Number(managerInput.addTo)) { 
+				// get index for chosen item
+				var itemIndex;
+				for (var i = 0; i < DBresults.length; i++){
+					if(DBresults[i].product_name === managerInput.item) {
+						itemIndex = i;
+					}
+				};
+				updatedStock = DBresults[itemIndex].stock_quantity + parseInt(managerInput.addTo);
+				console.log("updatedStock:" + updatedStock)
+				
 
+			}
+			else {
+				console.log("Please use numbers only! Now you have to start all over!");
+				managerPrompt();
+			}
 		});//end of .then manager input
+
 	});//end of connection.query callback
+	connection.query("UPDATE products SET ? WHERE ?" [
+		{stock_quantity: updatedStock},
+		{product_name: managerInput.item}], 
+		function(err, DBresults) {
+		if (err) throw err;
+		console.log("new stock added");
+	})
 	connection.end();
 }; //end of addInventory function
 
