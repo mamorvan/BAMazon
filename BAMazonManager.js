@@ -26,6 +26,7 @@ var managerOptions = function() {
 	      "View low inventory",
 	      "Add to inventory",
 	      "Add new product",
+	      "Delete a product",
 	      "Exit"
 	    ]
 	  }).then(function(command) 
@@ -45,6 +46,10 @@ var managerOptions = function() {
 
 	  		case "Add new product":
 	  			addProduct();
+	  			break;
+
+	  		case "Delete a product":
+	  			deleteProduct();
 	  			break;
 
 	  		case "Exit":
@@ -87,7 +92,7 @@ var addInventory = function() {
 		inquirer.prompt([
 		{
 			name: "item",
-			message: "Select the item you want to add more of:",
+			message: "Select the product you want to add more of:",
 			type: "list",
 			choices: function() {
 				var itemArray = [];
@@ -134,20 +139,18 @@ var addInventory = function() {
 
 //-----function to add a new product-----//
 var addProduct = function() {
-
 	connection.query("SELECT product_name, department_name, price, stock_quantity FROM products", function(err, DBresults) {
 		inquirer.prompt([
 		{
 			name: "item",
-			message: "What is the name of your product?",
-			
+			message: "What is the name of your product?",		
 		},
 		{
 			name: "dept",
 			message: "Which department does the new product go in?",
 			type: "list",
-			choices: ["air", "earth", "fire", "water"]
-			
+			//will need to change these if departments change, keep trying to display from database with no repeats
+			choices: ["air", "earth", "fire", "water"]	
 		},
 		{
 			name: "price",
@@ -189,12 +192,40 @@ var addProduct = function() {
 			
 			connection.query(query, newProduct ,function(err, DBresults) {
 				if (err) throw err;
-				console.log("insert done");
+				console.log("You have successfully added " + managerInput.stock + " " + managerInput.item + " to BAMazon!");
+				managerOptions();
 			});//end of add product connection query
-			managerOptions();
+			
 		}); //end of inquirer .then
 	});//end of select connection query to get existing product names
 }; //end of addProduct function
+
+//-----function to delete products-----//
+var deleteProduct = function() {
+	connection.query("SELECT * FROM products", function(err, DBresults) {
+		inquirer.prompt([
+		{
+			name: "item",
+			message: "Select the product you want to delete:",
+			type: "list",
+			choices: function() {
+				var itemArray = [];
+				for (var i = 0; i < DBresults.length; i++) {
+					itemArray.push(DBresults[i].product_name);
+				}
+				return itemArray;
+			}
+		}
+		]).then(function(managerInput) {
+			var query = "DELETE from products WHERE product_name = ?";
+			connection.query(query, [managerInput.item], function(err, DBresults) {
+				if (err) throw err;
+				console.log("\n" + managerInput.item + " has been deleted from BAMazon. Hope it didn't cause any damage on the way out!");
+				managerOptions();
+			}); // end of connection to delete product		
+		});//end of .then manager input
+	});//end of connection.query
+}; //end of deleteProduct function
 
 
 
