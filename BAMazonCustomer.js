@@ -37,6 +37,7 @@ var customerOptions = function() {
 	  		sale();
 	  	}
 	  	else {
+	  		console.log("Bye. Come back soon!");
 	  		connection.end();
 	  	}
 	  })

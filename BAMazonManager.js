@@ -53,6 +53,7 @@ var managerOptions = function() {
 	  			break;
 
 	  		case "Exit":
+	  			console.log("Bye");
 	  			connection.end();
 	  			break;
 	  	}	  	
