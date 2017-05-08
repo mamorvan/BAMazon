@@ -13,10 +13,10 @@ See all available magical pets
 
 **If they choose:**
 I'm ready to adopt one or more magical pets
-![screen shot 2017-05-08 at 1 28 35 pm](https://cloud.githubusercontent.com/assets/21952950/25816497/43cd3316-33f2-11e7-9636-e123eff295d4.png)
-If id input does not exist
-![screen shot 2017-05-08 at 1 30 21 pm](https://cloud.githubusercontent.com/assets/21952950/25816581/82c23a1c-33f2-11e7-853c-a68123140063.png)
-If quantity exceed stock
+![ready to adopt](https://cloud.githubusercontent.com/assets/21952950/25816497/43cd3316-33f2-11e7-9636-e123eff295d4.png)
+* BUT id input does not exist
+![id does not exist](https://cloud.githubusercontent.com/assets/21952950/25816581/82c23a1c-33f2-11e7-853c-a68123140063.png)
+* BUT quantity exceed stock
 ![exceed stock](https://cloud.githubusercontent.com/assets/21952950/25816654/bcda04a0-33f2-11e7-8fcf-6bf82415690d.png)
 
 **If they choose:**
