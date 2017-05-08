@@ -21,6 +21,7 @@ I'm ready to adopt one or more magical pets
 
 **If they choose:**
 I have enough magic in my life, I'd like to exit
+* Connection to database is terminated
 
 
 ___
