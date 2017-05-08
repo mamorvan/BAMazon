@@ -3,7 +3,8 @@
 ___
 ### Customer Interface :moneybag:
 1. Customer gets a list of options
-![Customer Menu](https://gyazo.com/a85efb395ab1079fbf6ecd2b7e05bb42 "Customer Menu")
+
+![Customer Menu](/screenshots/customer menu.png "Customer Menu")
 
     1. See all available magical pets
 
