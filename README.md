@@ -1,7 +1,7 @@
 # BAMazon :boom:
-####*BAMazon offers the widest variety and best prices on magical creature adoptions* :dragon:
+#### *BAMazon offers the widest variety and best prices on magical creature adoptions* :dragon:
 ___
-###Customer Interface :
+### Customer Interface :
 
 ___
-###Manager Interface
+### Manager Interface
