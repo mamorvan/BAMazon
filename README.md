@@ -1,7 +1,12 @@
 # BAMazon :boom:
 #### :dragon: *BAMazon offers the widest variety and best prices on magical creature adoptions* :dragon:
+
+## CONTENTS
+1.[Customer View :moneybag:](#customer)
+2.[Manager View :clipboard:](#manager)
+3.[Supervisor View :briefcase:](#supervisor)
 ___
-### Customer Interface :moneybag:
+### Customer View :moneybag: <a name="customer"></a>
 **The customer gets a list of options**
 
 ![customer menu](https://cloud.githubusercontent.com/assets/21952950/25815888/4977fd20-33f0-11e7-8967-09c2571f0354.png)
@@ -25,5 +30,8 @@ I have enough magic in my life, I'd like to exit
 
 
 ___
-### Manager Interface :clipboard:
+### Manager View :clipboard: <a name="manager"></a>
+
+---
+### Supervisor View :briefcase: <a name="supervisor"></a>
 
