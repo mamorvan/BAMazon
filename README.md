@@ -40,22 +40,36 @@ ___
 **If the manager chooses:**
 View products on sale
 ![view products](https://cloud.githubusercontent.com/assets/21952950/25819968/a8a69bc8-33fd-11e7-8b7d-0e82c2bc342b.png)
+
 **If the manager chooses:**
 View low inventory
+
 ![low inventory](https://cloud.githubusercontent.com/assets/21952950/25820032/e0d4cf56-33fd-11e7-9f35-c54c9cad050a.png)
+
 **If the manager chooses:**
 Add to inventory
+* They get a list of existing products they can add to
+
 ![add inventory 1](https://cloud.githubusercontent.com/assets/21952950/25820080/133543c2-33fe-11e7-9b43-28bf7f00412f.png)
+* Then they can input how many items they want to add and see the new stock quantity
+
 ![stock updated](https://cloud.githubusercontent.com/assets/21952950/25821557/93583be0-3403-11e7-8058-bccfb687adf0.png)
+
 **If the manager chooses:**
 Add a new product
+* They type in the name of the new product(this is validated against existing products to make sure it is not already in the database)
+* They choose the department from a list
+* They input a price and a quantity of items (these are both validated as numbers greater than 0)
+
 ![add a new product](https://cloud.githubusercontent.com/assets/21952950/25821828/96990c34-3404-11e7-99c4-e3bf5fe5adc1.png)
 
 **If the manager chooses:**
 Delete a product
+
 ![Delete product](https://cloud.githubusercontent.com/assets/21952950/25821906/d43378ea-3404-11e7-8135-0583fd29a0e8.png)
 **If the manager chooses:**
 Exit
+* Connection to database is terminated
 
 ---
 ### Supervisor View :briefcase: <a name="supervisor"></a>

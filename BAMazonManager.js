@@ -167,8 +167,8 @@ var addProduct = function() {
 				console.log("Please use numbers only for prices! Now you have to start over!");
 				return addProduct();
 			}
-			//validate if quantity is a number
-			if (!(Number(managerInput.stock))) {
+			//validate if quantity is a number and more than 0
+			if (!(Number(managerInput.stock) && managerInput.stock > 0)) {
 				console.log("Please use numbers only for stock quantity! Now you have to start over!");
 				return addProduct();
 			}
