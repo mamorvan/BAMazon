@@ -35,14 +35,18 @@ I have enough magic in my life, I'd like to exit
 ___
 ### Manager View :clipboard: <a name="manager"></a>
 **The manager gets a list of options**
+
 ![manager menu](https://cloud.githubusercontent.com/assets/21952950/25819919/82c461f6-33fd-11e7-8d49-b218265ef74e.png)
 
 **If the manager chooses:**
 View products on sale
+* They get a list of all products with IDs, prices and number in stock
+
 ![view products](https://cloud.githubusercontent.com/assets/21952950/25819968/a8a69bc8-33fd-11e7-8b7d-0e82c2bc342b.png)
 
 **If the manager chooses:**
 View low inventory
+* They get a list of products with less than 5 in stock
 
 ![low inventory](https://cloud.githubusercontent.com/assets/21952950/25820032/e0d4cf56-33fd-11e7-9f35-c54c9cad050a.png)
 
@@ -65,8 +69,10 @@ Add a new product
 
 **If the manager chooses:**
 Delete a product
+* This is a useful function if the manager added too many new products while testing the system!
 
 ![Delete product](https://cloud.githubusercontent.com/assets/21952950/25821906/d43378ea-3404-11e7-8135-0583fd29a0e8.png)
+
 **If the manager chooses:**
 Exit
 * Connection to database is terminated
