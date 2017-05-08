@@ -3,7 +3,6 @@
 ___
 ### Customer Interface :moneybag:
 1. Customer gets a list of options
-
 ![Customer Menu](/screenshots/customer menu.png "Customer Menu")
 
     1. See all available magical pets
