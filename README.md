@@ -9,7 +9,7 @@
 [:briefcase: Supervisor View](#supervisor)
 
 ___
-### Customer View :moneybag: <a name="customer"></a>
+## Customer View :moneybag: <a name="customer"></a>
 **The customer gets a list of options**
 
 ![customer menu](https://cloud.githubusercontent.com/assets/21952950/25815888/4977fd20-33f0-11e7-8967-09c2571f0354.png)
@@ -33,7 +33,7 @@ I have enough magic in my life, I'd like to exit
 
 
 ___
-### Manager View :clipboard: <a name="manager"></a>
+## Manager View :clipboard: <a name="manager"></a>
 **The manager gets a list of options**
 
 ![manager menu](https://cloud.githubusercontent.com/assets/21952950/25819919/82c461f6-33fd-11e7-8d49-b218265ef74e.png)
@@ -78,5 +78,5 @@ Exit
 * Connection to database is terminated
 
 ---
-### Supervisor View :briefcase: <a name="supervisor"></a>
+## Supervisor View :briefcase: <a name="supervisor"></a>
 
