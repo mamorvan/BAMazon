@@ -2,9 +2,9 @@
 #### :dragon: *BAMazon offers the widest variety and best prices on magical creature adoptions* :dragon:
 
 ## CONTENTS
-[:moneybag: Customer View](#customer)
-[:clipboard: Manager View](#manager)
-[:briefcase: Supervisor View](#supervisor)
+*[:moneybag: Customer View](#customer)
+*[:clipboard: Manager View](#manager)
+*[:briefcase: Supervisor View](#supervisor)
 ___
 ### Customer View :moneybag: <a name="customer"></a>
 **The customer gets a list of options**
