@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 var prompt = require("prompt");
 var colors = require("colors/safe");
+var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -12,8 +13,34 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err){
 	if(err) throw err;
-	console.log("connected as id" + connection.threadId + "\n");
+	customerOptions();
 });
+
+//-----function to show customer options-----//
+//use inquirer for better list format-----//
+var customerOptions = function() {
+	inquirer.prompt({
+	    name: "command",
+	    type: "list",
+	    message: "Welcome to BAMazon! What would you like to do?",
+	    choices: [
+	      "See all available magical pets",
+	      "I'm ready to adopt one or more magical pets",
+	      "I have enough magic in my life, I'd like to exit"
+	    ]
+	  }).then(function(command) 
+	  {
+	  	if (command.command === "See all available magical pets") {
+	  		displayProducts();
+	  	}
+	  	else if (command.command === "I'm ready to adopt one or more magical pets") {
+	  		sale();
+	  	}
+	  	else {
+	  		connection.end();
+	  	}
+	  })
+}; //end of customerOptions function
 
 //------function to display products for sale----------//
 var displayProducts = function() {
@@ -24,28 +51,28 @@ var displayProducts = function() {
 			console.log("Item# " + DBresults[i].item_id + ": " + DBresults[i].product_name + " - Price: $" + DBresults[i].price);
 		};
 		console.log("\n");
-	sale();	
+	customerOptions();	
 	});
 	
 };//end of displayProducts function
 
 //------function to prompt customer input, check stock, calculate total and update db stock-----------//
-var sale = function() {
-	
+//-----use prompt for easier validation-----//
+var sale = function() {	
 	//set up prompt properties
-	prompt.message = colors.green("Welcome to BAMazon");
+	prompt.message = colors.cyan("BAMazon");
 	prompt.delimiter = colors.magenta(" *** ");
 
 	var schema =  {
 		properties: {
 			productID: {
-				description: colors.cyan("Please enter the product ID for the magical pet you'd like to buy"),
+				description: colors.green("Please enter the product ID for the magical pet you'd like to buy"),
 				pattern: /^[0-9]+$/,
 				message: colors.yellow("Product IDs contain only numbers, try again"),
 				required: true
 			},
 			quantity: {
-				description: colors.cyan("How many would you like?"),
+				description: colors.green("How many would you like?"),
 				pattern: /^[0-9]+$/,
 				message: colors.yellow("Please enter a number quantity, try again"),
 				required: true
@@ -56,27 +83,36 @@ var sale = function() {
 	prompt.start();
 
 	prompt.get(schema, function(err, customerInput) {
-		//query database for chosen product data
-		connection.query("SELECT * FROM products WHERE ?", {item_id : customerInput.productID}, function(err, DBresults) {
-			//if there is not enough stock
-			if (customerInput.quantity > DBresults[0].stock_quantity) {
-				console.log("I'm sorry, we don't have that many of " + DBresults[0].product_name + ". We only have " + DBresults[0].stock_quantity + ".");
-				console.log("Try changing your pet, quantity or both.");
-				sale();
+		//query database for number of products and make sure product ID exists
+		connection.query("SElECT COUNT(*) AS itemCount FROM products", function(err, itemCount) {
+			var itemCount = itemCount[0].itemCount;
+
+			if (customerInput.productID > itemCount) {
+				console.log ("I'm sorry, that product id does not exists.\nMaybe you should look at our list of products again.");
+				return customerOptions();
 			}
-			else {
-				connection.query("UPDATE products SET stock_quantity = stock_quantity-" + customerInput.quantity + " WHERE item_id =" + customerInput.productID, function(err) {
-					if (err) throw err;
-					console.log("Stock has been updated.");
-					console.log("Your total cost is: $" + customerInput.quantity * DBresults[0].price);
-					connection.end();
-				});
-			}
-		});//end of connection query
+			//query database for chosen product data
+			connection.query("SELECT * FROM products WHERE ?", {item_id : customerInput.productID}, function(err, DBresults) {
+
+				//if there is not enough stock
+				if (customerInput.quantity > DBresults[0].stock_quantity) {
+					console.log("I'm sorry, we don't have that many of " + DBresults[0].product_name + ". We only have " + DBresults[0].stock_quantity + ".");
+					console.log("Try changing your pet, quantity or both.");
+					sale();
+				}
+				else {
+					connection.query("UPDATE products SET stock_quantity = stock_quantity-" + customerInput.quantity + " WHERE item_id =" + customerInput.productID, function(err) {
+						if (err) throw err;
+						console.log("Stock has been updated.");
+						console.log("Congratulations! You have ordered " + customerInput.quantity + " of " + DBresults[0].product_name + "\nYour total cost is: $" + customerInput.quantity * DBresults[0].price);
+						customerOptions();
+					});
+				}
+			});//end of connection query
+		});//end of initial query		
 	});//end of prompt get
 };//end of sale function
 
-displayProducts();
 
 
 

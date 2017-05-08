@@ -1,6 +1,5 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var colors = require('colors/safe');
 
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -12,40 +11,78 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
 	if(err) throw err;
-	console.log("connected as id" + connection.threadId + "\n");
+	managerOptions();
 });
+
+//-----function to show manager options-----//
+//use inquirer for better list format-----//
+var managerOptions = function() {
+	inquirer.prompt({
+	    name: "command",
+	    type: "list",
+	    message: "Welcome to BAMazon's Manager Interface! What would you like to do?",
+	    choices: [
+	      "View products for sale",
+	      "View low inventory",
+	      "Add to inventory",
+	      "Add new product",
+	      "Exit"
+	    ]
+	  }).then(function(command) 
+	  {
+	  	switch(command.command) {
+	  		case "View products for sale":
+	  			viewProducts();
+	  			break;
+
+	  		case "View low inventory":
+	  			viewLow();
+	  			break;
+
+	  		case "Add to inventory":
+	  			addInventory();
+	  			break;
+
+	  		case "Add new product":
+	  			addProduct();
+	  			break;
+
+	  		case "Exit":
+	  			connection.end();
+	  			break;
+	  	}	  	
+	  })
+}; //end of managerOptions function
 
 //-----function to display available items with itemID, name, price and quantity------//
 var viewProducts = function() {
 	connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, DBresults) {
 		if (err) throw err;
-		console.log("Hi manager, here is the current inventory:");
+		console.log("\nHi manager, here is the current inventory:");
 		for (var i = 0; i < DBresults.length; i++) {
 			console.log("ItemID: " + DBresults[i].item_id + ": " + DBresults[i].product_name + "  -- price: $" + DBresults[i].price + " -- quantity in stock: " + DBresults[i].stock_quantity);
 		};
+
 	});//end of connection.query callback
-	connection.end();
+	managerOptions();
 }; //end of viewProducts function
 
 //-----function to display all items with inventory count lower than 5-----//
 var viewLow = function() {
 	connection.query("SELECT product_name, stock_quantity FROM products", function(err, DBresults) {
 		if (err) throw err;
-		console.log("Hi manager, the following products have a low inventory:\n");
+		console.log("\nHi manager, the following products have a low inventory:\n");
 		for (var i = 0; i < DBresults.length; i++) {
 			if (DBresults[i].stock_quantity < 5) {
-				console.log("Warning!!!\n" + DBresults[i].product_name + " only has " + DBresults[i].stock_quantity + " items remaining.\nYou might want to go find some more!");
+				console.log("Warning!!!\n" + DBresults[i].product_name + " only has " + DBresults[i].stock_quantity + " items remaining.\nYou might want to go find some more!\n");
 			}		
 		};
 	});//end of connection.query callback
-	connection.end();
+	managerOptions();
 }; //end of viewLow function
 
-//****************WORK ON THIS*************************************//
 //-----function to add inventory to existing items-----//
 var addInventory = function() {
-	var updatedStock;
-
 	connection.query("SELECT product_name, stock_quantity FROM products", function(err, DBresults) {
 		inquirer.prompt([
 		{
@@ -62,7 +99,7 @@ var addInventory = function() {
 		},
 		{
 			name: "addTo",
-			message: "How many items do you want to add?"
+			message: "How many items do you want to add to existing stock?"
 		}
 		]).then(function(managerInput) {
 			//check if user actually input a number
@@ -74,56 +111,90 @@ var addInventory = function() {
 						itemIndex = i;
 					}
 				};
-				updatedStock = DBresults[itemIndex].stock_quantity + parseInt(managerInput.addTo);
-				console.log("updatedStock:" + updatedStock)
-				
 
+				var updatedStock = DBresults[itemIndex].stock_quantity + parseInt(managerInput.addTo);
+
+				var query = "UPDATE products SET stock_quantity = ? WHERE product_name = ?";
+				connection.query(query, [updatedStock, managerInput.item], function(err, DBresults) {
+				if (err) throw err;
+				console.log("\nnew stock added");
+				})
+				console.log(managerInput.item + " updatedStock : " + updatedStock);
+				managerOptions();
 			}
 			else {
-				console.log("Please use numbers only! Now you have to start all over!");
-				managerPrompt();
+				console.log("Please use numbers only for stock quantity! Now you have to start all over!");
+				managerOptions();
 			}
 		});//end of .then manager input
 
 	});//end of connection.query callback
-	connection.query("UPDATE products SET ? WHERE ?" [
-		{stock_quantity: updatedStock},
-		{product_name: managerInput.item}], 
-		function(err, DBresults) {
-		if (err) throw err;
-		console.log("new stock added");
-	})
-	connection.end();
+
 }; //end of addInventory function
 
 //-----function to add a new product-----//
 var addProduct = function() {
 
+	connection.query("SELECT product_name, department_name, price, stock_quantity FROM products", function(err, DBresults) {
+		inquirer.prompt([
+		{
+			name: "item",
+			message: "What is the name of your product?",
+			
+		},
+		{
+			name: "dept",
+			message: "Which department does the new product go in?",
+			type: "list",
+			choices: ["air", "earth", "fire", "water"]
+			
+		},
+		{
+			name: "price",
+			message: "What is the cost of the new product?"
+		},
+		{
+			name: "stock",
+			message: "How many items of the new product do you want to add?"
+		}
+		]).then(function(managerInput) {
+			//validate price is a number and more than 0
+			if(!(Number(managerInput.price) && managerInput.price > 0)) {
+				console.log("Please use numbers only for prices! Now you have to start over!");
+				return addProduct();
+			}
+			//validate if quantity is a number
+			if (!(Number(managerInput.stock))) {
+				console.log("Please use numbers only for stock quantity! Now you have to start over!");
+				return addProduct();
+			}
+			//validate that product doesn't already exist
+			var existingProductArray = [];
+			for (var i = 0; i < DBresults.length; i++) {
+				existingProductArray.push(DBresults[i].product_name);
+			}
+			if (existingProductArray.indexOf(managerInput.item) !== -1) {
+				console.log("product already exists");
+				return addProduct();
+			}
+
+			//query to add product to db
+			var query = "INSERT INTO products SET ?";
+			var newProduct = {
+				product_name:managerInput.item, 
+				department_name:managerInput.dept, 
+				price:parseInt(managerInput.price), 
+				stock_quantity:parseInt(managerInput.stock)
+			};
+			
+			connection.query(query, newProduct ,function(err, DBresults) {
+				if (err) throw err;
+				console.log("insert done");
+			});//end of add product connection query
+			managerOptions();
+		}); //end of inquirer .then
+	});//end of select connection query to get existing product names
 }; //end of addProduct function
 
-var managerPrompt = function() {
-	inquirer.prompt([
-		{
-			name: "command",
-			message: "What would you like to do?",
-			type: "list",
-			choices: ["View products", "View low inventory", "Add to inventory", "Add new product"]
-		}
-	]).then(function(command) {
-		if (command.command === "View products") {
-			viewProducts();
-		}
-		else if (command.command === "View low inventory") {
-			viewLow();
-		}
-		else if (command.command === "Add to inventory") {
-			addInventory();
-		}
-		else {
-			addProduct();
-		}
-	});
-}//end of managerPrompt function
 
-managerPrompt();
 
