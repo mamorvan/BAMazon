@@ -4,7 +4,7 @@ ___
 ### Customer Interface :moneybag:
 1. Customer gets a list of options
 
-![Customer Menu](screenshots/customer menu.png "Customer Menu")
+![customer menu](https://cloud.githubusercontent.com/assets/21952950/25815888/4977fd20-33f0-11e7-8967-09c2571f0354.png customer menu)
 
     1. See all available magical pets
 
