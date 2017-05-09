@@ -44,7 +44,8 @@ var customerOptions = function() {
 }; //end of customerOptions function
 
 //------function to display products for sale - 
-//with id, name and price (would like to include number in stock but following hw directions!---------//
+//with id, name and price (would like to include number in stock but following hw directions!
+//sometimes i'm a rule follower---------//
 var displayProducts = function() {
 	connection.query("SELECT item_id, product_name, price FROM products", function(err, DBresults) {
 		if (err) throw err;

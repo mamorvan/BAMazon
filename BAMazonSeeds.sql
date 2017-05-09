@@ -30,3 +30,9 @@ VALUES
 	("young hydra", "water", 1000, 5),
 	("baby nixie", "water", 1000, 10);	
 
+INSERT INTO departments (department_name, over_head_costs)
+VALUES
+	("air", 2000),
+	("earth", 500),
+	("fire", 2000),
+	("water", 5000);
