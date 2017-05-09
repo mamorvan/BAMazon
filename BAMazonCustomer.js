@@ -84,17 +84,19 @@ var sale = function() {
 	prompt.start();
 
 	prompt.get(schema, function(err, customerInput) {
-		//query database for number of products and make sure product ID exists
-		connection.query("SElECT COUNT(*) AS itemCount FROM products", function(err, itemCount) {
-			var itemCount = itemCount[0].itemCount;
-
-			if (customerInput.productID > itemCount) {
+		//query database for item IDs and make sure product ID exists
+		connection.query("SElECT item_id FROM products", function(err, itemIDs) {
+			var itemIDArray = [];
+			for (var i = 0; i < itemIDs.length; i++) {
+				itemIDArray.push(itemIDs[i].item_id);
+			}
+			if (itemIDArray.indexOf(parseInt(customerInput.productID)) === -1) {
 				console.log ("I'm sorry, that product id does not exists.\nMaybe you should look at our list of products again.");
 				return customerOptions();
 			}
 			//query database for chosen product data
 			connection.query("SELECT * FROM products WHERE ?", {item_id : customerInput.productID}, function(err, DBresults) {
-
+				var totalSale = customerInput.quantity * DBresults[0].price;
 				//if there is not enough stock
 				if (customerInput.quantity > DBresults[0].stock_quantity) {
 					console.log("I'm sorry, we don't have that many of " + DBresults[0].product_name + ". We only have " + DBresults[0].stock_quantity + ".");
@@ -102,15 +104,21 @@ var sale = function() {
 					sale();
 				}
 				else {
-					connection.query("UPDATE products SET stock_quantity = stock_quantity-" + customerInput.quantity + " WHERE item_id =" + customerInput.productID, function(err) {
+					connection.query("UPDATE products SET stock_quantity = stock_quantity-" + customerInput.quantity 
+						+ ", product_sales = product_sales+" + totalSale 
+						+ " WHERE item_id =" + customerInput.productID, function(err) {
 						if (err) throw err;
 						console.log("Stock has been updated.");
-						console.log("Congratulations! You have ordered " + customerInput.quantity + " of " + DBresults[0].product_name + "\nYour total cost is: $" + customerInput.quantity * DBresults[0].price);
+						console.log("Congratulations! You have ordered " + customerInput.quantity + " of " + DBresults[0].product_name + "\nYour total cost is: $" + totalSale);
+						connection.query("UPDATE departments SET total_sales = total_sales+" + totalSale 
+							+ " WHERE department_name =" + JSON.stringify(DBresults[0].department_name), function(err) {
+							if (err) throw err;
+						});
 						customerOptions();
 					});
 				}
-			});//end of connection query
-		});//end of initial query		
+			});//end of connection query	
+		});//end of item query		
 	});//end of prompt get
 };//end of sale function
 
