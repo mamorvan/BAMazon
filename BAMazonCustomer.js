@@ -43,7 +43,8 @@ var customerOptions = function() {
 	  })
 }; //end of customerOptions function
 
-//------function to display products for sale----------//
+//------function to display products for sale - 
+//with id, name and price (would like to include number in stock but following hw directions!---------//
 var displayProducts = function() {
 	connection.query("SELECT item_id, product_name, price FROM products", function(err, DBresults) {
 		if (err) throw err;
@@ -58,7 +59,7 @@ var displayProducts = function() {
 };//end of displayProducts function
 
 //------function to prompt customer input, check stock, calculate total and update db stock-----------//
-//-----use prompt for easier validation-----//
+//-----use prompt for easier validation and colors!----//
 var sale = function() {	
 	//set up prompt properties
 	prompt.message = colors.cyan("BAMazon");

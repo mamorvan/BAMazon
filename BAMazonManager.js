@@ -29,8 +29,7 @@ var managerOptions = function() {
 	      "Delete a product",
 	      "Exit"
 	    ]
-	  }).then(function(command) 
-	  {
+	  }).then(function(command) {
 	  	switch(command.command) {
 	  		case "View products for sale":
 	  			viewProducts();
@@ -56,8 +55,8 @@ var managerOptions = function() {
 	  			console.log("Bye");
 	  			connection.end();
 	  			break;
-	  	}	  	
-	  })
+	  	}  	
+	  }) //end of .then 
 }; //end of managerOptions function
 
 //-----function to display available items with itemID, name, price and quantity------//
