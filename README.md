@@ -98,6 +98,7 @@ Create a new department
 
 **If the supervisor chooses:**
 Delete a department
+* They can choose from a list of existing departments
 
 ![delete department](https://cloud.githubusercontent.com/assets/21952950/25904643/d1d8c9d2-356d-11e7-849a-5c1988fc5f18.png)
 
