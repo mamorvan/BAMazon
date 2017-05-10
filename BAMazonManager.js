@@ -150,13 +150,12 @@ var addProduct = function() {
 		inquirer.prompt([
 		{
 			name: "item",
-			message: "What is the name of your product?",		
+			message: "What is the name of your product?"		
 		},
 		{
 			name: "dept",
 			message: "Which department does the new product go in?",
 			type: "list",
-			//will need to change these if departments change, keep trying to display from database with no repeats
 			choices: deptArray
 		},
 		{
