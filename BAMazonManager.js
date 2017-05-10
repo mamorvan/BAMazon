@@ -139,6 +139,13 @@ var addInventory = function() {
 
 //-----function to add a new product-----//
 var addProduct = function() {
+	//get list of deparments from deparment db
+	var deptArray = [];
+	connection.query("SELECT department_name FROM departments", function(err, DBresults) {
+		for (var i = 0; i < DBresults.length; i++) {
+			deptArray.push(DBresults[i].department_name);
+		}
+	});
 	connection.query("SELECT product_name, department_name, price, stock_quantity FROM products", function(err, DBresults) {
 		inquirer.prompt([
 		{
@@ -150,7 +157,7 @@ var addProduct = function() {
 			message: "Which department does the new product go in?",
 			type: "list",
 			//will need to change these if departments change, keep trying to display from database with no repeats
-			choices: ["air", "earth", "fire", "water"]	
+			choices: deptArray
 		},
 		{
 			name: "price",
