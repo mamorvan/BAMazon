@@ -24,6 +24,7 @@ var supervisorOptions = function() {
 		choices: [
 			"View product sales by department",
 			"Create a new department",
+			"Delete a department",
 			"Exit"
 		]
 	}).then(function(command){
@@ -34,6 +35,10 @@ var supervisorOptions = function() {
 
 			case "Create a new department":
 				createDept();
+				break;
+
+			case "Delete a department":
+				deleteDept();
 				break;
 
 			case "Exit":
@@ -70,32 +75,72 @@ var viewDeptSales = function() {
 //-----function to create a new department-----//
 //make sure to console.log reminder to manually add department to manager js file until developer figures out how to populate directly from db//
 var createDept = function() {
-	inquirer.prompt([
-	{
-		name: "dept",
-		message: "Which department do you want to add?"
-	},
-	{
-		name: "cost",
-		message: "What are the overhead costs for this department?"
-	}
-	]).then(function(deptInput) {
-		console.log(deptInput.dept, deptInput.cost);
-
-		var newDept = {
-			department_name:deptInput.dept,
-			over_head_costs:deptInput.cost
-		};
-
-		connection.query("INSERT INTO departments SET ?", newDept , function(err, DBresponse) {
-			if (err) throw err;
-			console.log("You have successfully added " + deptInput.dept + " department.  You can now start adding products in the Manager Interface.");
-			supervisorOptions();
-		});
-		
-	}); //end of inquirer .then
+	//get array of existing departmentsvalidate that department does not already exist
+	var deptArray = [];
+	connection.query("SELECT department_name FROM departments", function(err, DBresults) {
+		for (var i = 0; i < DBresults.length; i++) {
+		deptArray.push(DBresults[i].department_name);
+		}
+	 	//get input from supervisor
+		inquirer.prompt([
+			{
+				name: "dept",
+				message: "Which department do you want to add?"
+			},
+			{
+				name: "cost",
+				message: "What are the overhead costs for this department?"
+			}
+		]).then(function(deptInput) {
+			//validate if department already exists
+			if(deptArray.indexOf(deptInput.dept) !== -1) {
+				console.log("That deparment already exists! Maybe you should check the sales table again!");
+				return viewDeptSales();
+			}
+			//validate overhead is a number and more than 0
+			if(!(Number(deptInput.cost) && deptInput.cost > 0)) {
+				console.log("Please use numbers only for cost! Now you have to start over!");
+				return createDept();
+			}
+			//create a new dept from input
+			var newDept = {
+				department_name:deptInput.dept,
+				over_head_costs:deptInput.cost
+			};
+			//add new dept to db
+			connection.query("INSERT INTO departments SET ?", newDept , function(err, DBresponse) {
+				if (err) throw err;
+				console.log("You have successfully added " + deptInput.dept + " department.  You can now start adding products in the Manager Interface.");
+				supervisorOptions();
+			});			
+		}); //end of inquirer .then
+	});
 }; //end of createDept function
 
+//------function to delete department-----//
+var deleteDept = function() {
+	connection.query("SELECT * FROM departments", function(err,DBresults) {
+		inquirer.prompt([
+			{
+				name: "dept",
+				message: "Select the department you want to delete:",
+				type: "list",
+				choices: function() {
+					var deptArray = [];
+					for (var i = 0; i < DBresults.length; i++) {
+						deptArray.push(DBresults[i].department_name);
+					}
+					return deptArray;
+				}
+			}]).then(function(deptInput) {
+				connection.query("DELETE from departments WHERE department_name = ?", [deptInput.dept], function(err, DBresponse){
+					if (err) throw err;
+					console.log("\nThe " + deptInput.dept + " department has been deleted.  They should have been more profitable!\nThe creatures in this department can be deleted by the manager or sold at clearance prices.");
+					supervisorOptions();
+				});
+			});//end of .then
+	});//end of query
+};//end of deleteDept function
 
 
 
