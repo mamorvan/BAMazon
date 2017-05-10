@@ -81,30 +81,35 @@ Exit
 ## Supervisor View :briefcase: <a name="supervisor"></a>
 **The supervisor gets a list of options**
 
-![customer menu](https://cloud.githubusercontent.com/assets/21952950/25815888/4977fd20-33f0-11e7-8967-09c2571f0354.png)
+![supervisor menu](https://cloud.githubusercontent.com/assets/21952950/25902502/b443f30c-3567-11e7-98ed-6e22af042ff9.png)
 
-**If the customer chooses:**
-See all available magical pets
+**If the supervisor chooses:**
+View product sales by department
 
-![screen shot 2017-05-08 at 1 26 35 pm](https://cloud.githubusercontent.com/assets/21952950/25816413/099529c4-33f2-11e7-99ec-2bf364993b3e.png)
+![view sales](https://cloud.githubusercontent.com/assets/21952950/25902550/dc578246-3567-11e7-8d36-d25562adb9fa.png)
 
-**If the customer chooses:**
-I'm ready to adopt one or more magical pets
-![ready to adopt](https://cloud.githubusercontent.com/assets/21952950/25816497/43cd3316-33f2-11e7-9636-e123eff295d4.png)
-* BUT the customer's product id does not exist
-![id does not exist](https://cloud.githubusercontent.com/assets/21952950/25816581/82c23a1c-33f2-11e7-853c-a68123140063.png)
-* BUT the customer's desired quantity exceeds available stock
-![exceed stock](https://cloud.githubusercontent.com/assets/21952950/25816654/bcda04a0-33f2-11e7-8fcf-6bf82415690d.png)
+**If the supervisor chooses:**
+Create a new department
+* They type in the name of the new department (this is validated against existing departments to make sure it does not already exist)
+* They type in the overhead cost of the new department (this is validated as a number greater than 0)
+![add department](https://cloud.githubusercontent.com/assets/21952950/25904144/5352014c-356c-11e7-8b3a-e4168049731a.png)
+* The manager can now add products to the new department
+![add product to department](https://cloud.githubusercontent.com/assets/21952950/25904200/87b83a50-356c-11e7-86c5-612fc1e12002.png)
 
-**If the customer chooses:**
-I have enough magic in my life, I'd like to exit
+**If the supervisor chooses:**
+Delete a department
+
+![delete department](https://cloud.githubusercontent.com/assets/21952950/25904643/d1d8c9d2-356d-11e7-849a-5c1988fc5f18.png)
+
+**If the supervisor chooses:**
+Exit
 * Connection to database is terminated
 
 
-![supervisor menu](https://cloud.githubusercontent.com/assets/21952950/25902502/b443f30c-3567-11e7-98ed-6e22af042ff9.png)
-![view sales](https://cloud.githubusercontent.com/assets/21952950/25902550/dc578246-3567-11e7-8d36-d25562adb9fa.png)
-![add department](https://cloud.githubusercontent.com/assets/21952950/25904144/5352014c-356c-11e7-8b3a-e4168049731a.png)
-![add product to department](https://cloud.githubusercontent.com/assets/21952950/25904200/87b83a50-356c-11e7-86c5-612fc1e12002.png)
-![delete department](https://cloud.githubusercontent.com/assets/21952950/25904643/d1d8c9d2-356d-11e7-849a-5c1988fc5f18.png)
+
+
+
+
+
 
 
