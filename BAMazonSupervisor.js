@@ -135,7 +135,7 @@ var deleteDept = function() {
 			}]).then(function(deptInput) {
 				connection.query("DELETE from departments WHERE department_name = ?", [deptInput.dept], function(err, DBresponse){
 					if (err) throw err;
-					console.log("\nThe " + deptInput.dept + " department has been deleted.  They should have been more profitable!\nThe creatures in this department can be deleted by the manager or sold at clearance prices.");
+					console.log("\nThe " + deptInput.dept + " department has been deleted.  They should have been more profitable!\nThe creatures in this department can be deleted by the manager or sold off at clearance prices.");
 					supervisorOptions();
 				});
 			});//end of .then
